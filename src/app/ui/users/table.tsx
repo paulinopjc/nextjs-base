@@ -1,4 +1,3 @@
-import Image from 'next/image';
 import { UpdateUser, DeleteUser } from '@/app/ui/users/buttons';
 import { fetchUsers } from '@/app/lib/data';
 
