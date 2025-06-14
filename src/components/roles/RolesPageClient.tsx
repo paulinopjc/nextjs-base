@@ -7,8 +7,13 @@ import Search from '@ui/search';
 import RolesTable from '@components/roles/RolesTable';
 import { CreateRole } from '@components/roles/RoleButtons';
 
+type Role = {
+  id: string;
+  name: string;
+};
+
 type Props = {
-  roles: any[];
+  roles: Role[];
   totalPages: number;
   query?: string;
 };
@@ -18,8 +23,6 @@ export default function RolesPageClient({ roles, totalPages, query = '' }: Props
 
   const isSearchActive = query.trim().length > 0;
   const hasInitialData = totalPages > 0 || isSearchActive;
-
-  console.log(totalPages);
 
   return (
     <div className="w-full">

@@ -3,13 +3,19 @@
 import Table from '@ui/table';
 import { UpdateUser, DeleteUser } from '@components/users/UserButtons';
 
-export default function UsersTable({ users }: { users: any[] }) {
+type User = {
+  id: string;
+  name: string;
+  email: string;
+};
+
+export default function UsersTable({ users }: { users: User[] }) {
 
   const columns = [
     {
       key: 'name',
       label: 'User',
-      render: (user: any) => <p>{user.name}</p>,
+      render: (user: User) => <p>{user.name}</p>,
     },
     {
       key: 'email',
@@ -22,7 +28,7 @@ export default function UsersTable({ users }: { users: any[] }) {
     {
       key: 'actions',
       label: '',
-      render: (user: any) => (
+      render: (user: User) => (
         <div className="flex justify-end gap-3">
           <UpdateUser id={user.id} />
           <DeleteUser id={user.id} />
@@ -31,7 +37,7 @@ export default function UsersTable({ users }: { users: any[] }) {
     },
   ];
 
-  const renderMobile = (user: any) => (
+  const renderMobile = (user: User) => (
     <>
       <div className="flex items-center justify-between border-b pb-4">
         <div>

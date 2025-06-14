@@ -58,3 +58,16 @@ export async function fetchUserPages(query: string) {
   }
 }
 
+export async function fetchUserById(id: string) {
+  try {
+    const role = await prisma.role.findUnique({
+      where: { id },
+    });
+
+    return role;
+  } catch (error) {
+    console.error('Database Error:', error);
+    throw new Error('Failed to fetch User.');
+  }
+}
+

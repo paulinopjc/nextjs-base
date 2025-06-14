@@ -95,7 +95,7 @@ export async function createUser(prevState: State, formData: FormData) {
         roleId,
       },
     });
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error(error);
     if (error.code === 'P2002') {
       return {

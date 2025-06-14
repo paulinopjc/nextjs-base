@@ -7,8 +7,14 @@ import Search from '@ui/search';
 import UsersTable from '@components/users/UsersTable';
 import { CreateUser } from '@components/users/UserButtons';
 
+type User = {
+  id: string;
+  name: string;
+  email: string;
+};
+
 type Props = {
-  users: any[];
+  users: User[];
   totalPages: number;
   query?: string;
 };

@@ -1,18 +1,22 @@
 import React from 'react';
 
 type Column<T> = {
-  key: string;
+  key: keyof T;
   label: string;
   render?: (row: T) => React.ReactNode;
 };
 
-type TableProps<T> = {
+type TableProps<T extends Record<string, unknown>> = {
   data: T[];
   columns: Column<T>[];
   mobileRender: (row: T) => React.ReactNode;
 };
 
-export default function Table<T>({ data, columns, mobileRender }: TableProps<T>) {
+export default function Table<T extends Record<string, unknown>>({
+  data,
+  columns,
+  mobileRender,
+}: TableProps<T>) {
   return (
     <div className="mt-6 flow-root">
       <div className="inline-block min-w-full align-middle">
@@ -32,7 +36,7 @@ export default function Table<T>({ data, columns, mobileRender }: TableProps<T>)
               <tr>
                 {columns.map((col) => (
                   <th
-                    key={col.key}
+                    key={String(col.key)}
                     scope="col"
                     className="px-4 py-5 font-medium sm:pl-6"
                   >
@@ -43,16 +47,13 @@ export default function Table<T>({ data, columns, mobileRender }: TableProps<T>)
             </thead>
             <tbody className="bg-white text-sm">
               {data.map((row, i) => (
-                <tr
-                  key={i}
-                  className="border-b last-of-type:border-none"
-                >
+                <tr key={i} className="border-b last-of-type:border-none">
                   {columns.map((col) => (
                     <td
-                      key={col.key}
+                      key={String(col.key)}
                       className="whitespace-nowrap px-4 py-3 sm:pl-6"
                     >
-                      {col.render ? col.render(row) : (row as any)[col.key]}
+                      {col.render ? col.render(row) : String(row[col.key])}
                     </td>
                   ))}
                 </tr>
