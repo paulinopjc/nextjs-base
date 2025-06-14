@@ -1,6 +1,6 @@
 import { redirect } from 'next/navigation';
 import auth from 'next-auth';
-import { authConfig } from '@/lib/auth/config';
+import { authConfig } from '@lib/auth/options';
 import SideNav from '@components/dashboard/sidenav';
  
 export default function Layout({ children }: { children: React.ReactNode }) {

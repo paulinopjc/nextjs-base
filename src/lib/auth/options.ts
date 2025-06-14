@@ -1,8 +1,7 @@
-// lib/auth/config.ts
 import GitHub from 'next-auth/providers/github';
 import type { NextAuthConfig } from 'next-auth';
 
-export const authConfig: NextAuthConfig = {
+const authOptions: NextAuthConfig = {
   providers: [
     GitHub({
       clientId: process.env.GITHUB_ID!,
@@ -23,3 +22,5 @@ export const authConfig: NextAuthConfig = {
     },
   },
 };
+
+export default authOptions;

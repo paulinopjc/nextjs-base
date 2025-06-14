@@ -1,6 +1,6 @@
 // lib/auth/getSessionUser.ts
 import auth from 'next-auth';
-import { authConfig } from '@/lib/auth/config';
+import { authConfig } from '@lib/auth/options';
 
 export async function getSessionUser() {
   const session = await auth(authConfig);
