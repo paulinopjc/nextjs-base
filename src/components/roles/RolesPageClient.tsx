@@ -1,0 +1,73 @@
+'use client';
+
+import { useState } from 'react';
+import { lusitana } from '@ui/fonts';
+import Pagination from '@ui/pagination';
+import Search from '@ui/search';
+import RolesTable from '@components/roles/RolesTable';
+import { CreateRole } from '@components/roles/RoleButtons';
+
+type Props = {
+  roles: any[];
+  totalPages: number;
+  query?: string;
+};
+
+export default function RolesPageClient({ roles, totalPages, query = '' }: Props) {
+  const [isPending, setIsPending] = useState(false);
+
+  const isSearchActive = query.trim().length > 0;
+  const hasInitialData = totalPages > 0 || isSearchActive;
+
+  console.log(totalPages);
+
+  return (
+    <div className="w-full">
+      <div className="flex w-full items-center justify-between">
+        <h1 className={`${lusitana.className} text-2xl`}>Roles</h1>
+      </div>
+
+      {hasInitialData && (
+        <div className="mt-4 flex items-center justify-between gap-2 md:mt-8">
+          <Search placeholder="Search roles..." onSearchPending={setIsPending} />
+          <CreateRole />
+        </div>
+      )}
+
+      {totalPages === 0 ? (
+        isSearchActive ? (
+          <p className="mt-6 text-gray-500">No roles found for your search.</p>
+        ) : (
+          <>
+            <p className="mt-6 text-gray-500">Add your first Role</p>
+            <div className="mt-4">
+              <CreateRole />
+            </div>
+          </>
+        )
+      ) : (
+        <div className="relative mt-4">
+          <div
+            className={`transition duration-300 ${
+              isPending ? 'blur-sm pointer-events-none' : ''
+            }`}
+          >
+            <RolesTable roles={roles} />
+
+            {totalPages > 1 && (
+              <div className="mt-5 flex w-full justify-center">
+                <Pagination totalPages={totalPages} />
+              </div>
+            )}
+          </div>
+
+          {isPending && (
+            <div className="absolute inset-0 flex items-center justify-center bg-white/50 backdrop-blur-sm z-10">
+              <span className="text-gray-700 text-sm">Loading results...</span>
+            </div>
+          )}
+        </div>
+      )}
+    </div>
+  );
+}

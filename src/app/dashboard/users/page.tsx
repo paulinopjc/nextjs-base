@@ -1,43 +1,20 @@
-import Pagination from '@/app/ui/pagination';
-import Search from '@/app/ui/search';
-import Table from '@app/ui/users/table';
-import { CreateUser } from '@/app/ui/users/buttons';
-import { lusitana } from '@/app/ui/fonts';
-import { UsersTableSkeleton } from '@/app/ui/skeletons';
 import { Suspense } from 'react';
-import { fetchUserPages } from '@/app/lib/data';
-import { Metadata } from 'next';
- 
-export const metadata: Metadata = {
-  title: 'Users',
-};
- 
-export default async function Page(props: {
-	searchParams?: Promise<{
-		query?: string,
-		page?: string
-	}>;
-}) {
-	const searchParams = await props.searchParams;
-	const query = searchParams?.query || '';
-	const currentPage = Number(searchParams?.page) || 1;
-	const totalPages = await fetchUserPages(query);
+import UsersPageClient from '@components/users/UsersPageClient';
+import { fetchUsers, fetchUserPages } from '@lib/users/data';
+import { UsersTableSkeleton } from '@/ui/skeletons';
+
+export default async function Page({ searchParams }: { searchParams?: { query?: string; page?: string } }) {
+  const query = searchParams?.query || '';
+  const page = Number(searchParams?.page || '1');
+
+  const [users, totalPages] = await Promise.all([
+    fetchUsers(query, page),
+    fetchUserPages(query),
+  ]);
 
   return (
-    <div className="w-full">
-      <div className="flex w-full items-center justify-between">
-        <h1 className={`${lusitana.className} text-2xl`}>Invoices</h1>
-      </div>
-      <div className="mt-4 flex items-center justify-between gap-2 md:mt-8">
-        <Search placeholder="Search invoices..." />
-        <CreateUser />
-      </div>
-       <Suspense key={query + currentPage} fallback={<UsersTableSkeleton />}>
-        <Table query={query} currentPage={currentPage} />
-      </Suspense>
-      <div className="mt-5 flex w-full justify-center">
-        <Pagination totalPages={totalPages} />
-      </div>
-    </div>
+    <Suspense fallback={<UsersTableSkeleton />}>
+      <UsersPageClient users={users} totalPages={totalPages} query={query} />
+    </Suspense>
   );
 }

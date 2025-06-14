@@ -1,4 +1,4 @@
-import Form from '@components/users/create-form';
+import Form from '@components/roles/create-form';
 import Breadcrumbs from '@ui/breadcrumbs';
  
 export default async function Page() {
@@ -7,10 +7,10 @@ export default async function Page() {
     <main>
       <Breadcrumbs
         breadcrumbs={[
-          { label: 'Users', href: '/dashboard/users' },
+          { label: 'Roles', href: '/dashboard/roles' },
           {
-            label: 'Create User',
-            href: '/dashboard/users/create',
+            label: 'Create Role',
+            href: '/dashboard/roles/create',
             active: true,
           },
         ]}

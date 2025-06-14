@@ -1,6 +1,6 @@
-import Form from '@/app/ui/users/edit-form';
-import Breadcrumbs from '@/app/ui/breadcrumbs';
-import { fetchUserById } from '@/app/lib/data';
+import Form from '@components/users/edit-form';
+import Breadcrumbs from '@ui/breadcrumbs';
+import { fetchUserById } from '@lib/users/data';
 import { notFound } from 'next/navigation';
  
 export default async function Page(props: { params: Promise<{ id: string }> }) {
