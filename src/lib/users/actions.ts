@@ -6,38 +6,42 @@ import { redirect } from 'next/navigation';
 import bcrypt from 'bcrypt';
 import { prisma } from '@/lib/prisma';
 
-const UserFormSchema = z.object({
-  id: z.string(),
+const CreateUserSchema = z.object({
   name: z
     .string()
     .min(1, 'Name is required')
     .regex(/^[A-Za-z\s]+$/, 'Name must not contain numbers'),
-
   email: z.string().email('Invalid email address'),
-
   password: z
     .string()
     .min(8, 'Password must be at least 8 characters')
     .regex(/[A-Z]/, 'Password must contain at least one uppercase letter')
     .regex(/\d/, 'Password must contain at least one number')
     .regex(/[!@#$%^&*(),.?":{}|<>]/, 'Password must contain at least one special character'),
-
   confirmPassword: z.string(),
   roleId: z.string().min(1, 'Role is required'),
+}).refine((data) => data.password === data.confirmPassword, {
+  path: ['confirmPassword'],
+  message: 'Passwords do not match',
 });
 
-const CreateUser = UserFormSchema
-  .omit({ id: true })
-  .refine((data) => data.password === data.confirmPassword, {
-    path: ['confirmPassword'],
-    message: 'Passwords do not match',
-  });
-
-const UpdateUser = UserFormSchema
-  .omit({ id: true })
-  .extend({
-    password: z.string().optional(),
-    confirmPassword: z.string().optional(),
+const UpdateUserSchema = z
+  .object({
+    name: z
+      .string()
+      .min(1, 'Name is required')
+      .regex(/^[A-Za-z\s]+$/, 'Name must not contain numbers'),
+    email: z.string().email('Invalid email address'),
+    password: z
+      .string()
+      .min(8, 'Password must be at least 8 characters')
+      .regex(/[A-Z]/, 'Password must contain at least one uppercase letter')
+      .regex(/\d/, 'Password must contain at least one number')
+      .regex(/[!@#$%^&*(),.?":{}|<>]/, 'Password must contain at least one special character')
+      .optional()
+      .or(z.literal('')),
+    confirmPassword: z.string().optional().or(z.literal('')),
+    roleId: z.string().min(1, 'Role is required'),
   })
   .refine(
     (data) => !data.password || data.password === data.confirmPassword,
@@ -59,7 +63,7 @@ export type State = {
 };
 
 export async function createUser(prevState: State, formData: FormData) {
-  const validatedFields = CreateUser.safeParse({
+  const validatedFields = CreateUserSchema.safeParse({
     name: formData.get('name'),
     email: formData.get('email'),
     password: formData.get('password'),
@@ -97,7 +101,12 @@ export async function createUser(prevState: State, formData: FormData) {
     });
   } catch (error: unknown) {
     console.error(error);
-    if (error.code === 'P2002') {
+    if (
+      typeof error === 'object' &&
+      error !== null &&
+      'code' in error &&
+      (error as any).code === 'P2002'
+    ) {
       return {
         errors: {
           email: ['Email already exists.'],
@@ -105,6 +114,7 @@ export async function createUser(prevState: State, formData: FormData) {
         message: 'Failed to create user.',
       };
     }
+
     throw new Error('Failed to create user.');
   }
 
@@ -113,11 +123,11 @@ export async function createUser(prevState: State, formData: FormData) {
 }
 
 export async function updateUser(id: string, formData: FormData) {
-  const validatedFields = UpdateUser.safeParse({
+  const validatedFields = UpdateUserSchema.safeParse({
     name: formData.get('name'),
     email: formData.get('email'),
-    password: formData.get('password')?.toString(),
-    confirmPassword: formData.get('confirmPassword')?.toString(),
+    password: formData.get('password')?.toString().trim() || undefined,
+    confirmPassword: formData.get('confirmPassword')?.toString().trim() || undefined,
     roleId: formData.get('roleId'),
   });
 
@@ -134,7 +144,7 @@ export async function updateUser(id: string, formData: FormData) {
   if (!roleExists) {
     return {
       errors: { roleId: ['Selected role does not exist.'] },
-      message: 'Failed to create user.',
+      message: 'Failed to update user.',
     };
   }
 

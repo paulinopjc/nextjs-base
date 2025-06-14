@@ -1,25 +1,32 @@
 'use client';
 
-import { User } from '@/lib/definitions';
-import { EyeIcon, EyeSlashIcon } from '@heroicons/react/24/outline';
+import { useActionState, useEffect, useState } from 'react';
 import Link from 'next/link';
+import { EyeIcon, EyeSlashIcon } from '@heroicons/react/24/outline';
 import { Button } from '@ui/button';
 import { State, updateUser } from '@lib/users/actions';
-import { useActionState } from 'react';
-import { useState } from 'react';
+import { fetchAllRoles } from '@/lib/roles/data';
+import { User } from '@/lib/definitions';
 
-export default function EditUserForm({
-  user,
-}: {
-  user: User;
-}) {
-  const updateUserWithId = async (state: State, formData: FormData) => {
-  return await updateUser(user.id, formData);
+type Role = {
+  id: string;
+  name: string;
 };
-	const initialState: State = { message: null, errors: {} };
-	const [state, formAction] = useActionState(updateUserWithId, initialState);
 
-	const [showPassword, setShowPassword] = useState(false);
+export default function EditUserForm({ user }: { user: User }) {
+  const updateUserWithId = async (state: State, formData: FormData) => {
+    return await updateUser(user.id, formData);
+  };
+
+  const initialState: State = { message: null, errors: {} };
+  const [state, formAction] = useActionState(updateUserWithId, initialState);
+  const [roles, setRoles] = useState<Role[]>([]);
+  const [showPassword, setShowPassword] = useState(false);
+
+  useEffect(() => {
+    fetchAllRoles().then(setRoles).catch(console.error);
+  }, []);
+
   return (
     <form action={formAction}>
       <div className="rounded-md bg-gray-50 p-4 md:p-6">
@@ -34,10 +41,10 @@ export default function EditUserForm({
               name="name"
               type="text"
               placeholder="Enter Username"
-              className="peer block w-full rounded-md border border-gray-200 py-2 pl-3 text-sm outline-2 placeholder:text-gray-500"
+              defaultValue={user.name}
               required
-              aria-describedby='name-error'
-							defaultValue={user.name}
+              className="peer block w-full rounded-md border border-gray-200 py-2 pl-3 text-sm outline-2 placeholder:text-gray-500"
+              aria-describedby="name-error"
             />
             <div id="name-error" aria-live="polite" aria-atomic="true">
               {state.errors?.name?.map((error) => (
@@ -60,10 +67,10 @@ export default function EditUserForm({
               name="email"
               type="email"
               placeholder="Enter Email"
-              className="peer block w-full rounded-md border border-gray-200 py-2 pl-3 text-sm outline-2 placeholder:text-gray-500"
+              defaultValue={user.email}
               required
-              aria-describedby='email-error'
-							defaultValue={user.email}
+              className="peer block w-full rounded-md border border-gray-200 py-2 pl-3 text-sm outline-2 placeholder:text-gray-500"
+              aria-describedby="email-error"
             />
             <div id="email-error" aria-live="polite" aria-atomic="true">
               {state.errors?.email?.map((error) => (
@@ -72,6 +79,38 @@ export default function EditUserForm({
                 </p>
               ))}
             </div>
+          </div>
+        </div>
+
+        {/* Role */}
+        <div className="mb-4">
+          <label htmlFor="roleId" className="mb-2 block text-sm font-medium">
+            Role
+          </label>
+          <select
+            id="roleId"
+            name="roleId"
+            required
+            value={user.roleId}
+            className="block w-full rounded-md border border-gray-200 py-2 pl-3 text-sm text-gray-700"
+            aria-describedby="role-error"
+          >
+            <option value="">Select a role</option>
+            {roles.map((role) => (
+              <option 
+                key={role.id} 
+                value={role.id}
+              >
+                {role.name}
+              </option>
+            ))}
+          </select>
+          <div id="role-error" aria-live="polite" aria-atomic="true">
+            {state.errors?.roleId?.map((error) => (
+              <p className="mt-2 text-sm text-red-500" key={error}>
+                {error}
+              </p>
+            ))}
           </div>
         </div>
 
@@ -87,7 +126,7 @@ export default function EditUserForm({
               type={showPassword ? 'text' : 'password'}
               placeholder="Enter Password"
               className="peer block w-full rounded-md border border-gray-200 py-2 pl-3 text-sm outline-2 placeholder:text-gray-500"
-              aria-describedby='password-error'
+              aria-describedby="password-error"
             />
             <button
               type="button"
@@ -95,19 +134,19 @@ export default function EditUserForm({
               onClick={() => setShowPassword((prev) => !prev)}
             >
               {showPassword ? (
-								<EyeSlashIcon className="h-5 w-5 text-blue-600 cursor-pointer" />
-							) : (
-								<EyeIcon className="h-5 w-5 text-blue-600 cursor-pointer" />
-							)}
+                <EyeSlashIcon className="h-5 w-5 text-blue-600 cursor-pointer" />
+              ) : (
+                <EyeIcon className="h-5 w-5 text-blue-600 cursor-pointer" />
+              )}
             </button>
           </div>
-					<div id="password-error" aria-live="polite" aria-atomic="true">
+          <div id="password-error" aria-live="polite" aria-atomic="true">
             {state.errors?.password?.map((error) => (
-            <p className="mt-2 text-sm text-red-500" key={error}>
+              <p className="mt-2 text-sm text-red-500" key={error}>
                 {error}
-            </p>
+              </p>
             ))}
-        	</div>
+          </div>
         </div>
 
         {/* Confirm Password */}
@@ -122,16 +161,16 @@ export default function EditUserForm({
               type={showPassword ? 'text' : 'password'}
               placeholder="Re-enter Password"
               className="peer block w-full rounded-md border border-gray-200 py-2 pl-3 text-sm outline-2 placeholder:text-gray-500"
-              aria-describedby='confirm-password-error'
+              aria-describedby="confirm-password-error"
             />
           </div>
           <div id="confirm-password-error" aria-live="polite" aria-atomic="true">
             {state.errors?.confirmPassword?.map((error) => (
-            <p className="mt-2 text-sm text-red-500" key={error}>
+              <p className="mt-2 text-sm text-red-500" key={error}>
                 {error}
-            </p>
+              </p>
             ))}
-        	</div>
+          </div>
         </div>
       </div>
 

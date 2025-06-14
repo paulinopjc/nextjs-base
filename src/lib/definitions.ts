@@ -7,16 +7,10 @@ export type User = {
   name: string;
   email: string;
   password: string;
+  roleId: string;
 };
 
 export type Role = {
   id: string;
-  name: string;
-};
-
-export type UserRole = {
-  id: string;
-  userId: string;
-  roleId: string;
   name: string;
 };

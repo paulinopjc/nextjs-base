@@ -1,31 +1,25 @@
 // lib/auth/config.ts
-import CredentialsProvider from 'next-auth/providers/credentials';
-import type { NextAuthOptions } from 'next-auth';
+import GitHub from 'next-auth/providers/github';
+import type { NextAuthConfig } from 'next-auth';
 
-export const authConfig: NextAuthOptions = {
+export const authConfig: NextAuthConfig = {
   providers: [
-    CredentialsProvider({
-      name: 'Credentials',
-      credentials: {
-        email: { label: 'Email', type: 'text' },
-        password: { label: 'Password', type: 'password' },
-      },
-      async authorize(credentials) {
-        if (
-          credentials?.email === 'admin@example.com' &&
-          credentials.password === 'admin123'
-        ) {
-          return { id: '1', name: 'Admin', email: 'admin@example.com' };
-        }
-        return null;
-      },
+    GitHub({
+      clientId: process.env.GITHUB_ID!,
+      clientSecret: process.env.GITHUB_SECRET!,
     }),
   ],
   pages: {
-    signIn: '/admin/login',
+    signIn: '/auth/signin', // optional
   },
-  session: {
-    strategy: 'jwt',
+  callbacks: {
+    async session({ session, token }) {
+      // optionally enhance session
+      return session;
+    },
+    async jwt({ token }) {
+      // optionally enhance token
+      return token;
+    },
   },
 };
-
