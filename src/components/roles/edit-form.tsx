@@ -5,7 +5,6 @@ import Link from 'next/link';
 import { Button } from '@ui/button';
 import { State, updateRole } from '@lib/roles/actions';
 import { useActionState } from 'react';
-import { useState } from 'react';
 
 export default function EditRoleForm({
   role,

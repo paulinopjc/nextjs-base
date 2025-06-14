@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { Button } from '@ui/button';
 import { State, createRole } from '@lib/roles/actions';
-import { useActionState, useState } from 'react';
+import { useActionState } from 'react';
 
 export default function Form() {
   const initialState: State = { message: null, errors: {} };
