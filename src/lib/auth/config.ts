@@ -13,7 +13,7 @@ export const authConfig: NextAuthConfig = {
     signIn: '/auth/signin', // optional
   },
   callbacks: {
-    async session({ session, token }) {
+    async session({ session }) {
       // optionally enhance session
       return session;
     },

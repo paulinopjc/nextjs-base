@@ -99,22 +99,8 @@ export async function createUser(prevState: State, formData: FormData) {
         roleId,
       },
     });
-  } catch (error: unknown) {
+  } catch (error) {
     console.error(error);
-    if (
-      typeof error === 'object' &&
-      error !== null &&
-      'code' in error &&
-      (error as any).code === 'P2002'
-    ) {
-      return {
-        errors: {
-          email: ['Email already exists.'],
-        },
-        message: 'Failed to create user.',
-      };
-    }
-
     throw new Error('Failed to create user.');
   }
 
