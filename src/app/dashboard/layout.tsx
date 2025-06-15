@@ -1,10 +1,9 @@
 import { redirect } from 'next/navigation';
-import auth from 'next-auth';
-import { authConfig } from '@lib/auth/options';
+import { auth } from '@/lib/auth';
 import SideNav from '@components/dashboard/sidenav';
- 
-export default function Layout({ children }: { children: React.ReactNode }) {
-  const session = auth(authConfig);
+
+export default async function Layout({ children }: { children: React.ReactNode }) {
+  const session = await auth();
 
   if (!session) {
     redirect('/admin/login');

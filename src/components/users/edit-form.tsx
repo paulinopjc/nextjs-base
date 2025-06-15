@@ -87,24 +87,23 @@ export default function EditUserForm({ user }: { user: User }) {
           <label htmlFor="roleId" className="mb-2 block text-sm font-medium">
             Role
           </label>
-          <select
-            id="roleId"
-            name="roleId"
-            required
-            value={user.roleId}
-            className="block w-full rounded-md border border-gray-200 py-2 pl-3 text-sm text-gray-700"
-            aria-describedby="role-error"
-          >
-            <option value="">Select a role</option>
-            {roles.map((role) => (
-              <option 
-                key={role.id} 
-                value={role.id}
-              >
-                {role.name}
-              </option>
-            ))}
-          </select>
+          {roles.length > 0 && (
+            <select
+              id="roleId"
+              name="roleId"
+              required
+              defaultValue={String(user.roleId)} // ensures it's a string
+              className="block w-full rounded-md border border-gray-200 py-2 pl-3 text-sm text-gray-700"
+              aria-describedby="role-error"
+            >
+              <option value="">Select a role</option>
+              {roles.map((role) => (
+                <option key={role.id} value={String(role.id)}>
+                  {role.name}
+                </option>
+              ))}
+            </select>
+          )}
           <div id="role-error" aria-live="polite" aria-atomic="true">
             {state.errors?.roleId?.map((error) => (
               <p className="mt-2 text-sm text-red-500" key={error}>
