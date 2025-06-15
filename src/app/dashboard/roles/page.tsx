@@ -6,15 +6,17 @@ import { RolesTableSkeleton } from '@ui/skeletons';
 export default async function Page({
   searchParams,
 }: {
-  searchParams?: Record<string, string | string[]>;
+  searchParams: Promise<Record<string, string | string[] | undefined>>;
 }) {
-  const query = Array.isArray(searchParams?.query)
-    ? searchParams.query[0] ?? ''
-    : searchParams?.query ?? '';
+  const resolvedParams = await searchParams;
 
-  const pageStr = Array.isArray(searchParams?.page)
-    ? searchParams.page[0]
-    : searchParams?.page;
+  const query = Array.isArray(resolvedParams.query)
+    ? resolvedParams.query[0] ?? ''
+    : resolvedParams.query ?? '';
+
+  const pageStr = Array.isArray(resolvedParams.page)
+    ? resolvedParams.page[0]
+    : resolvedParams.page;
 
   const page = Number(pageStr) || 1;
 
@@ -29,4 +31,5 @@ export default async function Page({
     </Suspense>
   );
 }
+
 
