@@ -34,7 +34,10 @@ export async function fetchRoles(query: string, currentPage: number) {
       skip: offset,
     });
 
-    return roles;
+    return roles.map((role) => ({
+      id: role.id,
+      name: role.name ?? '',
+    }));
   } catch (error) {
     console.error('Database Error:', error);
     throw new Error('Failed to fetch roles.');
