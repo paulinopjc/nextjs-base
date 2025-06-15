@@ -1,7 +1,6 @@
 // lib/auth.ts
-import NextAuth from "next-auth"
-import GitHub from "next-auth/providers/github"
+import NextAuth from "next-auth";
+import { authOptions } from "./authOptions";
 
-export const { auth, handlers } = NextAuth({
-  providers: [GitHub],
-})
+// This works in both `middleware` and server components
+export const { auth } = NextAuth(authOptions);
