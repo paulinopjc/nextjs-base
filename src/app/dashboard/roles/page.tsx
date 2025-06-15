@@ -3,13 +3,23 @@ import RolesPageClient from '@components/roles/RolesPageClient';
 import { fetchRoles, fetchRolePages } from '@lib/roles/data';
 import { RolesTableSkeleton } from '@ui/skeletons';
 
-export default async function Page({
-  searchParams,
-}: {
-  searchParams?: Record<string, string | string[] | undefined>;
-}) {
-  const query = typeof searchParams?.query === 'string' ? searchParams.query : '';
-  const page = typeof searchParams?.page === 'string' ? Number(searchParams.page) : 1;
+interface Props {
+  searchParams?: {
+    query?: string | string[];
+    page?: string | string[];
+  };
+}
+
+export default async function Page({ searchParams }: Props) {
+  const query = Array.isArray(searchParams?.query)
+    ? searchParams?.query[0] ?? ''
+    : searchParams?.query ?? '';
+
+  const pageStr = Array.isArray(searchParams?.page)
+    ? searchParams.page[0]
+    : searchParams?.page;
+
+  const page = Number(pageStr) || 1;
 
   const [roles, totalPages] = await Promise.all([
     fetchRoles(query, page),
@@ -22,4 +32,3 @@ export default async function Page({
     </Suspense>
   );
 }
-
