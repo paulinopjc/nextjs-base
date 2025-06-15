@@ -15,7 +15,7 @@ datasource db {
 
 model User {
   id           String   @id @default(dbgenerated("gen_random_uuid()")) @db.Text
-  name         String?
+  name         String
   email        String   @unique
   password     String
   date_added   DateTime @default(now())
@@ -29,7 +29,7 @@ model User {
 
 model Role {
   id           String   @id @default(dbgenerated("gen_random_uuid()")) @db.Text
-  name         String?
+  name         String
   date_added   DateTime @default(now())
   date_updated DateTime @updatedAt
 
