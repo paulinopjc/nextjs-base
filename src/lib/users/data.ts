@@ -32,6 +32,7 @@ export async function fetchUsers(query: string, currentPage: number) {
 
     return users.map(user => ({
       ...user,
+      name: user.name ?? '',
       roleName: user.role?.name ?? 'No Role',
     }));
   } catch (error) {
