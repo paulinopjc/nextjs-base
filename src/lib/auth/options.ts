@@ -11,12 +11,25 @@ export const authOptions: NextAuthOptions = {
   pages: {
     signIn: '/auth/signin',
   },
+  debug: true,
   callbacks: {
-    async session({ session }) {
-      return session;
+    async jwt({ token, user, account, profile, isNewUser }) {
+      try {
+        // your logic here
+        return token;
+      } catch (error) {
+        console.error("JWT callback error:", error);
+        throw error;
+      }
     },
-    async jwt({ token }) {
-      return token;
+    async session({ session, token, user }) {
+      try {
+        // your logic here
+        return session;
+      } catch (error) {
+        console.error("Session callback error:", error);
+        throw error;
+      }
     },
   },
 };
