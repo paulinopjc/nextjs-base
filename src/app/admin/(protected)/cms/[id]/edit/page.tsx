@@ -24,10 +24,10 @@ export default async function Page({ params }: { params: ParamsType }) {
     <main>
       <Breadcrumbs
         breadcrumbs={[
-          { label: 'CMS Pages', href: '/dashboard/cms' },
+          { label: 'CMS Pages', href: '/admin/cms' },
           {
             label: 'Edit Page',
-            href: `/dashboard/cms/${id}/edit`,
+            href: `/admin/cms/${id}/edit`,
             active: true,
           },
         ]}

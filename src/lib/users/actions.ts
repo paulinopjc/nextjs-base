@@ -104,8 +104,8 @@ export async function createUser(prevState: State, formData: FormData) {
     throw new Error('Failed to create user.');
   }
 
-  revalidatePath('/dashboard/users');
-  redirect('/dashboard/users');
+  revalidatePath('/admin/users');
+  redirect('/admin/users');
 }
 
 export async function updateUser(id: string, formData: FormData) {
@@ -151,8 +151,8 @@ export async function updateUser(id: string, formData: FormData) {
     throw new Error('Failed to update user.');
   }
 
-  revalidatePath('/dashboard/users');
-  redirect('/dashboard/users');
+  revalidatePath('/admin/users');
+  redirect('/admin/users');
 }
 
 export async function deleteUser(id: string) {
@@ -163,5 +163,5 @@ export async function deleteUser(id: string) {
     throw new Error('Failed to delete user.');
   }
 
-  revalidatePath('/dashboard/users');
+  revalidatePath('/admin/users');
 }

@@ -92,8 +92,8 @@ export async function createCMS(prevState: State, formData: FormData) {
     throw new Error('Failed to create CMS page.');
   }
 
-  revalidatePath('/dashboard/cms');
-  redirect('/dashboard/cms');
+  revalidatePath('/admin/cms');
+  redirect('/admin/cms');
 }
 
 export async function updateCMS(id: string, formData: FormData) {
@@ -144,8 +144,8 @@ export async function updateCMS(id: string, formData: FormData) {
     throw new Error('Failed to update CMS page.');
   }
 
-  revalidatePath('/dashboard/cms');
-  redirect('/dashboard/cms');
+  revalidatePath('/admin/cms');
+  redirect('/admin/cms');
 }
 
 export async function deleteCMS(id: string) {
@@ -156,5 +156,5 @@ export async function deleteCMS(id: string) {
     throw new Error('Failed to delete CMS page.');
   }
 
-  revalidatePath('/dashboard/cms');
+  revalidatePath('/admin/cms');
 }

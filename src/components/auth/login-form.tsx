@@ -16,7 +16,7 @@ import { lusitana } from '@/ui/fonts';
 
 export default function LoginForm() {
   const searchParams = useSearchParams();
-  const callbackUrl = searchParams.get('callbackUrl') || '/dashboard';
+  const callbackUrl = searchParams.get('callbackUrl') || '/admin/dashboard';
   const [errorMessage, setErrorMessage] = useState('');
   const [isPending, setIsPending] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
@@ -46,7 +46,7 @@ export default function LoginForm() {
         setErrorMessage('Something went wrong.');
       }
     } else {
-      window.location.href = result?.url ?? '/dashboard';
+      window.location.href = result?.url ?? '/admin/dashboard';
     }
   }
 

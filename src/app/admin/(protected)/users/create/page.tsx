@@ -1,18 +1,18 @@
-import Form from '@components/roles/create-form';
+import Form from '@components/users/create-form';
 import Breadcrumbs from '@ui/breadcrumbs';
 
+// Force dynamic rendering for this page to prevent prerendering errors
 export const dynamic = 'force-dynamic';
- 
+
 export default async function Page() {
- 
   return (
     <main>
       <Breadcrumbs
         breadcrumbs={[
-          { label: 'Roles', href: '/dashboard/roles' },
+          { label: 'Users', href: '/admin/users' },
           {
-            label: 'Create Role',
-            href: '/dashboard/roles/create',
+            label: 'Create User',
+            href: '/admin/users/create',
             active: true,
           },
         ]}

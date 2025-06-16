@@ -8,10 +8,10 @@ export default async function Page() {
     <main>
       <Breadcrumbs
         breadcrumbs={[
-          { label: 'CMS', href: '/dashboard/cms' },
+          { label: 'CMS', href: '/admin/cms' },
           {
             label: 'Create Page',
-            href: '/dashboard/cms/create',
+            href: '/admin/cms/create',
             active: true,
           },
         ]}

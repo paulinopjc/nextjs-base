@@ -10,7 +10,7 @@ export default async function AdminPage() {
     if (!user) {
       redirect('/admin/login');
     } else {
-      redirect('/dashboard');
+      redirect('/admin/dashboard');
     }
   } catch {
     // On error, redirect to login as a safe fallback

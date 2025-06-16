@@ -50,8 +50,8 @@ export async function createRole(prevState: State, formData: FormData) {
     throw new Error('Failed to create role.');
   }
 
-    revalidatePath('/dashboard/roles');
-    redirect('/dashboard/roles');
+    revalidatePath('/admin/roles');
+    redirect('/admin/roles');
 }
 
 export async function updateRole(id: string, formData: FormData) {
@@ -80,8 +80,8 @@ export async function updateRole(id: string, formData: FormData) {
     throw new Error('Failed to update role.');
   }
 
-  revalidatePath('/dashboard/roles');
-  redirect('/dashboard/roles');
+  revalidatePath('/admin/roles');
+  redirect('/admin/roles');
 }
 
 
@@ -93,5 +93,5 @@ export async function deleteRole(id: string) {
   } catch (error) {
     console.error(error);
   }
-  revalidatePath('/dashboard/roles');
+  revalidatePath('/admin/roles');
 }

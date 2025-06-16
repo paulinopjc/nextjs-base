@@ -15,7 +15,7 @@ import { useState, useEffect } from 'react';
 const navItems = [
   {
     name: 'Home',
-    href: '/dashboard',
+    href: '/admin/dashboard',
     icon: HomeIcon,
   },
   {
@@ -24,7 +24,7 @@ const navItems = [
     children: [
       {
         name: 'Users',
-        href: '/dashboard/users',
+        href: '/admin/users',
         icon: UsersIcon,
       },
     ],
@@ -35,7 +35,18 @@ const navItems = [
     children: [
       {
         name: 'Roles',
-        href: '/dashboard/roles',
+        href: '/admin/roles',
+        icon: UsersIcon,
+      },
+    ],
+  },
+  {
+    name: 'CMS Management',
+    icon: Cog6ToothIcon,
+    children: [
+      {
+        name: 'CMs Pages',
+        href: '/admin/cms',
         icon: UsersIcon,
       },
     ],
