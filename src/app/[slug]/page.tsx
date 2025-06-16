@@ -2,15 +2,17 @@ import { Metadata } from 'next';
 import { fetchCMSBySlug } from '@/lib/cms/data';
 import { notFound } from 'next/navigation';
 
-type PageProps = {
-  params: {
-    slug: string;
-  };
-};
+// Define the type for params as a Promise
+type ParamsType = Promise<{ slug: string }>;
 
-export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+export async function generateMetadata({
+  params,
+}: {
+  params: ParamsType;
+}): Promise<Metadata> {
   const { slug } = await params;
   const page = await fetchCMSBySlug(slug);
+
   if (!page) return {};
 
   return {
@@ -19,7 +21,11 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   };
 }
 
-export default async function CMSPage({ params }: PageProps) {
+export default async function CMSPage({
+  params,
+}: {
+  params: ParamsType;
+}) {
   const { slug } = await params;
   const page = await fetchCMSBySlug(slug);
 

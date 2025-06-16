@@ -3,6 +3,8 @@ import RolesPageClient from '@components/roles/RolesPageClient';
 import { fetchRoles, fetchRolePages } from '@lib/roles/data';
 import { RolesTableSkeleton } from '@ui/skeletons';
 
+export const dynamic = 'force-dynamic';
+
 export default async function Page({
   searchParams,
 }: {

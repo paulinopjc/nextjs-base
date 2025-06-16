@@ -3,6 +3,8 @@ import CMSPageClient from '@components/cms/CMSPageClient';
 import { fetchCMSPages, fetchCMSPageCount } from '@/lib/cms/data';
 import { CMSTableSkeleton } from '@/ui/skeletons';
 
+export const dynamic = 'force-dynamic';
+
 export default async function Page({
   searchParams,
 }: {

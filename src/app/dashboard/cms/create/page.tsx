@@ -1,6 +1,8 @@
 import Form from '@components/cms/create-form';
 import Breadcrumbs from '@ui/breadcrumbs';
 
+export const dynamic = 'force-dynamic';
+
 export default async function Page() {
   return (
     <main>

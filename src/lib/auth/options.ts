@@ -1,7 +1,7 @@
 import GitHub from 'next-auth/providers/github';
-import type { NextAuthConfig } from 'next-auth';
+import type { NextAuthOptions } from 'next-auth';
 
-const authOptions: NextAuthConfig = {
+const authOptions: NextAuthOptions = {
   providers: [
     GitHub({
       clientId: process.env.GITHUB_ID!,
@@ -9,15 +9,13 @@ const authOptions: NextAuthConfig = {
     }),
   ],
   pages: {
-    signIn: '/auth/signin', // optional
+    signIn: '/auth/signin',
   },
   callbacks: {
     async session({ session }) {
-      // optionally enhance session
       return session;
     },
     async jwt({ token }) {
-      // optionally enhance token
       return token;
     },
   },

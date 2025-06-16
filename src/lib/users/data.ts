@@ -1,6 +1,7 @@
 'use server';
 
 import { prisma } from '@/lib/prisma';
+import { User } from '@/lib/definitions';
 
 const ITEMS_PER_PAGE = 6;
 
@@ -22,6 +23,8 @@ export async function fetchUsers(query: string, currentPage: number) {
         id: true,
         name: true,
         email: true,
+        password: true,  // add this
+        roleId: true,
         role: {
           select: {
             name: true,
@@ -30,7 +33,7 @@ export async function fetchUsers(query: string, currentPage: number) {
       },
     });
 
-    return users.map(user => ({
+    return users.map((user: User) => ({
       ...user,
       name: user.name ?? '',
       roleName: user.role?.name ?? 'No Role',

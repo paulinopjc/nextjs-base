@@ -3,6 +3,8 @@ import UsersPageClient from '@components/users/UsersPageClient';
 import { fetchUsers, fetchUserPages } from '@lib/users/data';
 import { UsersTableSkeleton } from '@/ui/skeletons';
 
+export const dynamic = 'force-dynamic';
+
 export default async function Page({
   searchParams,
 }: {

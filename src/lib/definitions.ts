@@ -8,6 +8,9 @@ export type User = {
   email: string;
   password: string;
   roleId: string;
+  role?: {
+    name: string;
+  };
 };
 
 export type Role = {

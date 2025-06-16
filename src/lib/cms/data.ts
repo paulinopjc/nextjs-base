@@ -69,6 +69,10 @@ export async function fetchCMSById(id: string) {
       },
     });
 
+    if (!cms || !cms.id || !cms.name) {
+      throw new Error('CMS page is incomplete or not found');
+    }
+
     return {
       ...cms,
       updatedByName: cms?.updated_by?.name ?? '—',

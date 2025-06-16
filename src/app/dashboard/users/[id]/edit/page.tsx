@@ -2,6 +2,8 @@ import Form from '@components/users/edit-form';
 import Breadcrumbs from '@ui/breadcrumbs';
 import { fetchUserById } from '@lib/users/data';
 import { notFound } from 'next/navigation';
+
+export const dynamic = 'force-dynamic';
  
 export default async function Page(props: { params: Promise<{ id: string }> }) {
 	const params = await props.params;

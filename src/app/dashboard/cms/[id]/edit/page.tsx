@@ -3,14 +3,20 @@ import Breadcrumbs from '@ui/breadcrumbs';
 import { fetchCMSById } from '@lib/cms/data';
 import { notFound } from 'next/navigation';
 
-export default async function Page(props: { params: Promise<{ id: string }> }) {
-  const { id } = await props.params;
-  const page = await fetchCMSById(id);
+export const dynamic = 'force-dynamic';
 
-  console.log(id);
-  console.log(page);
+type ParamsType = Promise<{ id: string }>;
 
-  if (!page) {
+export default async function Page({ params }: { params: ParamsType }) {
+  const { id } = await params;
+  let page;
+
+  try {
+    page = await fetchCMSById(id);
+    if (!page?.id) {
+      notFound();
+    }
+  } catch {
     notFound();
   }
 

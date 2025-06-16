@@ -1,6 +1,6 @@
-import type { NextAuthConfig } from 'next-auth';
+import type { NextAuthOptions } from 'next-auth';
 
-export const authConfig = {
+export const authConfig: NextAuthOptions = {
   pages: {
     signIn: '/admin/login',
   },
@@ -8,19 +8,6 @@ export const authConfig = {
     strategy: 'jwt',
   },
   callbacks: {
-    authorized({ auth, request: { nextUrl } }) {
-      const isLoggedIn = !!auth?.user;
-      const isOnDashboard = nextUrl.pathname.startsWith('/dashboard');
-
-      if (isOnDashboard) {
-        if (isLoggedIn) return true;
-        return false;
-      } else if (isLoggedIn) {
-        return Response.redirect(new URL('/dashboard', nextUrl));
-      }
-
-      return true;
-    },
     async jwt({ token, user }) {
       // user is only available on first login
       if (user) {
@@ -34,6 +21,7 @@ export const authConfig = {
       }
       return session;
     },
+    // Remove unauthorized callback; use signIn or middleware for access control
   },
   providers: [], // still empty, defined later in src/auth.ts
-} satisfies NextAuthConfig;
+};
