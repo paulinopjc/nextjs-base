@@ -2,12 +2,7 @@
 
 import Table from '@ui/table';
 import { UpdateUser, DeleteUser } from '@components/users/UserButtons';
-
-type User = {
-  id: string;
-  name: string;
-  email: string;
-};
+import type { User } from '@/lib/definitions';
 
 export default function UsersTable({ users }: { users: User[] }) {
 

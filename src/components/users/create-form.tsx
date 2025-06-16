@@ -6,11 +6,7 @@ import { State, createUser } from '@lib/users/actions';
 import { useActionState, useEffect, useState } from 'react';
 import { EyeIcon, EyeSlashIcon } from '@heroicons/react/24/outline';
 import { fetchAllRoles } from '@/lib/roles/data';
-
-type Role = {
-  id: string;
-  name: string;
-};
+import { Role } from '@/lib/definitions';
 
 export default function Form() {
   const initialState: State = { message: null, errors: {} };

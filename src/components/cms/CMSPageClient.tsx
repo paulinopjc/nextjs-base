@@ -4,17 +4,17 @@ import { useState } from 'react';
 import { lusitana } from '@ui/fonts';
 import Pagination from '@ui/pagination';
 import Search from '@ui/search';
-import RolesTable from '@components/roles/RolesTable';
-import { CreateRole } from '@components/roles/RoleButtons';
-import { Role } from '@/lib/definitions';
+import CMSTable from '@components/cms/CMSTable';
+import { CreateCMS } from '@components/cms/CMSButtons';
+import type { CMS } from '@/lib/definitions';
 
 type Props = {
-  roles: Role[];
+  cmsPages: CMS[];
   totalPages: number;
   query?: string;
 };
 
-export default function RolesPageClient({ roles, totalPages, query = '' }: Props) {
+export default function CMSPageClient({ cmsPages, totalPages, query = '' }: Props) {
   const [isPending, setIsPending] = useState(false);
 
   const isSearchActive = query.trim().length > 0;
@@ -23,24 +23,24 @@ export default function RolesPageClient({ roles, totalPages, query = '' }: Props
   return (
     <div className="w-full">
       <div className="flex w-full items-center justify-between">
-        <h1 className={`${lusitana.className} text-2xl`}>Roles</h1>
+        <h1 className={`${lusitana.className} text-2xl`}>CMS Pages</h1>
       </div>
 
       {hasInitialData && (
         <div className="mt-4 flex items-center justify-between gap-2 md:mt-8">
-          <Search placeholder="Search roles..." onSearchPending={setIsPending} />
-          <CreateRole />
+          <Search placeholder="Search CMS pages..." onSearchPending={setIsPending} />
+          <CreateCMS />
         </div>
       )}
 
       {totalPages === 0 ? (
         isSearchActive ? (
-          <p className="mt-6 text-gray-500">No roles found for your search.</p>
+          <p className="mt-6 text-gray-500">No CMS pages found for your search.</p>
         ) : (
           <>
-            <p className="mt-6 text-gray-500">Add your first Role</p>
+            <p className="mt-6 text-gray-500">Add your first CMS page</p>
             <div className="mt-4">
-              <CreateRole />
+              <CreateCMS />
             </div>
           </>
         )
@@ -51,7 +51,7 @@ export default function RolesPageClient({ roles, totalPages, query = '' }: Props
               isPending ? 'blur-sm pointer-events-none' : ''
             }`}
           >
-            <RolesTable roles={roles} />
+            <CMSTable cms={cmsPages} />
 
             {totalPages > 1 && (
               <div className="mt-5 flex w-full justify-center">

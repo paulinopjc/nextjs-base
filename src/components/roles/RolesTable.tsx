@@ -2,11 +2,7 @@
 
 import Table from '@ui/table';
 import { UpdateRole, DeleteRole } from '@components/roles/RoleButtons';
-
-type Role = {
-  id: string;
-  name: string;
-};
+import type { Role } from '@/lib/definitions';
 
 export default function RolesTable({ roles }: { roles: Role[] }) {
 

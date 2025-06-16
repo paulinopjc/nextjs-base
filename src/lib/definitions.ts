@@ -14,3 +14,12 @@ export type Role = {
   id: string;
   name: string;
 };
+
+export type CMS = {
+  id: string;
+  name: string;
+  slug: string;
+  content: string;
+  status: string;
+  updatedByName?: string;
+};

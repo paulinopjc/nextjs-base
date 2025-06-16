@@ -21,19 +21,37 @@ model User {
   date_added   DateTime @default(now())
   date_updated DateTime @updatedAt
 
-  roleId       String
-  role         Role     @relation(fields: [roleId], references: [id])
+  roleId String
+  role   Role   @relation(fields: [roleId], references: [id])
+
+  updatedCMS Cms[] @relation("cms_updated_by")
 
   @@map("users")
 }
 
 model Role {
   id           String   @id @default(dbgenerated("gen_random_uuid()")) @db.Text
-  name         String
+  name         String   @unique
   date_added   DateTime @default(now())
   date_updated DateTime @updatedAt
 
-  users        User[]
+  users User[]
 
   @@map("roles")
+}
+
+model Cms {
+  id      String @id @default(dbgenerated("gen_random_uuid()")) @db.Text
+  name    String
+  slug    String
+  content String @db.Text // Accepts HTML content
+  status String @default("draft") // New status column (e.g., 'draft', 'published', etc.)
+
+  updatedById String // Foreign key to User
+  updated_by  User   @relation("cms_updated_by", fields: [updatedById], references: [id])
+
+  date_added   DateTime @default(now())
+  date_updated DateTime @updatedAt
+
+  @@map("cms")
 }

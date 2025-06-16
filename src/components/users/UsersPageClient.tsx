@@ -6,12 +6,7 @@ import Pagination from '@ui/pagination';
 import Search from '@ui/search';
 import UsersTable from '@components/users/UsersTable';
 import { CreateUser } from '@components/users/UserButtons';
-
-type User = {
-  id: string;
-  name: string;
-  email: string;
-};
+import { User } from '@/lib/definitions';
 
 type Props = {
   users: User[];

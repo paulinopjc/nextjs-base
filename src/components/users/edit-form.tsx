@@ -7,11 +7,7 @@ import { Button } from '@ui/button';
 import { State, updateUser } from '@lib/users/actions';
 import { fetchAllRoles } from '@/lib/roles/data';
 import { User } from '@/lib/definitions';
-
-type Role = {
-  id: string;
-  name: string;
-};
+import { Role } from '@/lib/definitions';
 
 export default function EditUserForm({ user }: { user: User }) {
   const updateUserWithId = async (state: State, formData: FormData) => {
