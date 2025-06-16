@@ -1,6 +1,6 @@
-// lib/auth.ts
-import NextAuth from "next-auth";
+import signIn from 'next-auth/react';
+import { getServerSession } from "next-auth";
 import { authConfig } from "@/auth.config";
 
-// This works in both `middleware` and server components
-export const { auth } = NextAuth(authConfig);
+export const auth = () => getServerSession(authConfig);
+export { signIn };

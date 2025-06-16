@@ -1,22 +1,8 @@
-import NextAuth from "next-auth";
-import { authOptions } from "@/lib/auth/options";
+// src/app/api/auth/[...nextauth]/route.ts
+import NextAuth from 'next-auth';
+import { authConfig } from '@/auth.config';
 
-const handler = NextAuth(authOptions);
+const handler = NextAuth(authConfig);
 
-export const GET = async (req: Request) => {
-  try {
-    return await handler.auth(req);
-  } catch (error) {
-    console.error("NextAuth GET handler error:", error);
-    throw error;
-  }
-};
-
-export const POST = async (req: Request) => {
-  try {
-    return await handler.auth(req);
-  } catch (error) {
-    console.error("NextAuth POST handler error:", error);
-    throw error;
-  }
-};
+// This is the correct way to export for App Router API routes
+export { handler as GET, handler as POST };
