@@ -13,7 +13,7 @@ export const authOptions: NextAuthOptions = {
   },
   debug: true,
   callbacks: {
-    async jwt({ token, user, account, profile, isNewUser }) {
+    async jwt({ token }) {
       try {
         // your logic here
         return token;
@@ -22,7 +22,7 @@ export const authOptions: NextAuthOptions = {
         throw error;
       }
     },
-    async session({ session, token, user }) {
+    async session({ session }) {
       try {
         // your logic here
         return session;
