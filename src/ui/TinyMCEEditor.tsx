@@ -2,6 +2,7 @@
 
 import React, { useRef, useEffect, useState } from 'react';
 import { Editor } from '@tinymce/tinymce-react';
+import type { Editor as TinyMCEEditorType } from 'tinymce';
 
 interface TinyMCEEditorProps {
   value: string;
@@ -16,7 +17,7 @@ const TinyMCEEditor: React.FC<TinyMCEEditorProps> = ({
   onChange,
   height = 600,
 }) => {
-  const editorRef = useRef<any>(null);
+  const editorRef = useRef<TinyMCEEditorType | null>(null);
   const [isDarkMode, setIsDarkMode] = useState(false);
   const [isSmallScreen, setIsSmallScreen] = useState(false);
 
@@ -46,7 +47,7 @@ const TinyMCEEditor: React.FC<TinyMCEEditorProps> = ({
       onEditorChange={onChange}
       onInit={(_evt, editor) => (editorRef.current = editor)}
       init={{
-        height,
+        height: isSmallScreen ? 300 : height,
         onboarding: false,
         menubar: 'file edit view insert format tools table help',
         plugins:
