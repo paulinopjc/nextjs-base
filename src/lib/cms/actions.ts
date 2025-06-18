@@ -1,21 +1,21 @@
+// src/lib/cms/actions.ts
 'use server';
 
 import { z } from 'zod';
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 import { prisma } from '@/lib/prisma';
-import { auth } from '@/auth';
+// IMPORTANT: For v4, use getServerSession with your authConfig
+import { getServerSession } from 'next-auth';
+import { authConfig } from '@/auth.config'; // Import your full authConfig
 
 const CreateCMSSchema = z.object({
   name: z.string().min(1, 'Title is required'),
-
   slug: z
     .string()
     .min(1, 'Slug is required')
     .regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/, 'Slug must be lowercase and URL-friendly (e.g., "page-title")'),
-
   content: z.string().min(1, 'Content is required'),
-
   status: z.enum(['draft', 'published', 'archived'], {
     errorMap: () => ({ message: 'Status must be either "draft", "published", or "archived"' }),
   }),
@@ -41,12 +41,12 @@ async function checkSlugConflict(slug: string, currentId?: string) {
       ...(currentId && { NOT: { id: currentId } }),
     },
   });
-
   return !!existing;
 }
 
 export async function createCMS(prevState: State, formData: FormData) {
-  const session = await auth();
+  // Use getServerSession with your authConfig for v4 server actions
+  const session = await getServerSession(authConfig);
   if (!session?.user?.id) throw new Error('Unauthorized');
 
   const validatedFields = CreateCMSSchema.safeParse({
@@ -97,7 +97,7 @@ export async function createCMS(prevState: State, formData: FormData) {
 }
 
 export async function updateCMS(id: string, formData: FormData) {
-  const session = await auth();
+  const session = await getServerSession(authConfig); // Use getServerSession
   if (!session?.user?.id) throw new Error('Unauthorized');
 
   const validatedFields = UpdateCMSSchema.safeParse({

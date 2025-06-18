@@ -1,13 +1,17 @@
-import type { NextAuthOptions } from 'next-auth';
+// src/auth.config.ts
+// This file defines the COMPLETE AuthOptions configuration for NextAuth.js v4.
+
+import type { NextAuthOptions } from 'next-auth'; // Use NextAuthOptions for v4
 import CredentialsProvider from 'next-auth/providers/credentials';
 import bcrypt from 'bcrypt';
 import postgres from 'postgres';
+import { User } from './lib/definitions'; // Assuming your User type is here
 
 const sql = postgres(process.env.POSTGRES_URL!, { ssl: 'require' });
 
-async function getUserByEmail(email: string) {
+async function getUserByEmail(email: string): Promise<User | undefined> {
   try {
-    const result = await sql`SELECT id, name, email, password FROM users WHERE email = ${email}`;
+    const result = await sql<User[]>`SELECT id, name, email, password FROM users WHERE email = ${email}`;
     return result[0]; // undefined if no user
   } catch (error) {
     console.error('DB error in getUserByEmail:', error);
@@ -15,7 +19,7 @@ async function getUserByEmail(email: string) {
   }
 }
 
-export const authConfig: NextAuthOptions = {
+export const authConfig: NextAuthOptions = { // Use NextAuthOptions
   pages: {
     signIn: '/admin/login',
   },
@@ -41,7 +45,7 @@ export const authConfig: NextAuthOptions = {
         if (!passwordMatch) return null;
 
         return {
-          id: user.id.toString(),
+          id: user.id.toString(), // Ensure ID is a string
           name: user.name,
           email: user.email,
         };
@@ -51,15 +55,17 @@ export const authConfig: NextAuthOptions = {
   callbacks: {
     async jwt({ token, user }) {
       if (user) {
-        token.sub = user.id;
+        token.id = user.id; // Store user ID in token for session callback
       }
       return token;
     },
     async session({ session, token }) {
-      if (session.user && typeof token.sub === 'string') {
-        session.user.id = token.sub;
+      if (session.user) {
+        session.user.id = token.id as string; // Assign ID from token to session user
       }
       return session;
     },
   },
+  // In v4, 'secret' is often defined here or via NEXTAUTH_SECRET env variable
+  // secret: process.env.NEXTAUTH_SECRET, // Make sure you have this env var
 };
