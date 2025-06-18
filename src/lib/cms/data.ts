@@ -85,7 +85,10 @@ export async function fetchCMSById(id: string) {
 
 export async function fetchCMSBySlug(slug: string) {
   const page = await prisma.cms.findFirst({
-    where: { slug },
+    where: { 
+      slug,
+      status: 'published',
+     },
   });
 
   return page;
